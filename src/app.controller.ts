@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 
 // ルーティングを記述する
@@ -16,5 +16,11 @@ export class AppController {
   getGoodBye(): string {
     // appServiceクラスに記述したgetGoodByeメソッドを実行
     return this.appService.getGoodBye();
+  }
+
+  @Post()
+  postSomething(@Body() requestBody): string {
+    console.log(requestBody.msg);
+    return this.appService.postSomething(requestBody.msg);
   }
 }
