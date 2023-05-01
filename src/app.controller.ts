@@ -7,10 +7,10 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  /*@Get()
   getHello(): string {
     return this.appService.getHello();
-  }
+  }*/
 
   @Get('goodBye')
   getGoodBye(): string {
@@ -22,5 +22,10 @@ export class AppController {
   postSomething(@Body() requestBody): string {
     console.log(requestBody.msg);
     return this.appService.postSomething(requestBody.msg);
+  }
+
+  @Get()
+  getDynamoDBItems(): any {
+    return this.appService.getDynamoDBItems();
   }
 }
