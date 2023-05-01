@@ -11,4 +11,8 @@ export class AppService {
   getGoodBye(): string {
     return 'Good Bye!';
   }
+
+  postSomething(text: string): string {
+    return text;
+  }
 }
