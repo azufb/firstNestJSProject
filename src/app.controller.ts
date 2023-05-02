@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 // ルーティングを記述する
@@ -7,11 +7,6 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  /*@Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }*/
-
   @Get('goodBye')
   getGoodBye(): string {
     // appServiceクラスに記述したgetGoodByeメソッドを実行
@@ -19,13 +14,8 @@ export class AppController {
   }
 
   @Post()
-  postSomething(@Body() requestBody): string {
+  postSomething(@Body() requestBody: any): string {
     console.log(requestBody.msg);
     return this.appService.postSomething(requestBody.msg);
-  }
-
-  @Get()
-  getDynamoDBItems(): any {
-    return this.appService.getDynamoDBItems();
   }
 }
