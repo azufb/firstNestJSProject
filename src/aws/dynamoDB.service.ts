@@ -14,9 +14,9 @@ import {
 @Injectable()
 export class DynamoDBService {
   getDynamoDBClient(): DynamoDBDocumentClient {
-    const REGION = process.env.AWS_REGION;
-    const CREDENTIAL_REGION = process.env.CREDENTIAL_REGION;
-    const IDENTITY_POOL_ID = process.env.IDENTITY_POOL_ID || '';
+    const REGION: string = process.env.AWS_REGION;
+    const CREDENTIAL_REGION: string = process.env.CREDENTIAL_REGION;
+    const IDENTITY_POOL_ID: string = process.env.IDENTITY_POOL_ID || '';
 
     const ddbClient: DynamoDBClient = new DynamoDBClient({
       region: REGION,
