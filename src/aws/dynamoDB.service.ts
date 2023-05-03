@@ -68,9 +68,12 @@ export class DynamoDBService {
         new ScanCommand(param),
       );
 
-      console.log(data.Items);
       // ここで日付順になるようソートする
-      //data.Items?.sort();
+      data.Items.sort((a, b) => {
+        return a.timestamp - b.timestamp;
+      });
+
+      console.log(data.Items);
       return data;
     } catch (err) {
       console.log('err', err);
