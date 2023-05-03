@@ -1,19 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import {
-  DynamoDBClient,
-  ScanCommand,
-  ScanCommandOutput,
-} from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 import {
   DynamoDBDocumentClient,
   PutCommand,
   PutCommandOutput,
+  ScanCommand,
+  ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 
 @Injectable()
 export class DynamoDBService {
-  getDynamoDBClient(): DynamoDBDocumentClient {
+  REGION: string = process.env.AWS_REGION;
+  CREDENTIAL_REGION: string = process.env.CREDENTIAL_REGION;
+  IDENTITY_POOL_ID: string = process.env.IDENTITY_POOL_ID || '';
+
+  ddbClient: DynamoDBClient = new DynamoDBClient({
+    region: this.REGION,
+    credentials: fromCognitoIdentityPool({
+      clientConfig: {
+        region: this.CREDENTIAL_REGION,
+      },
+      identityPoolId: this.IDENTITY_POOL_ID,
+    }),
+  });
+
+  ddbDocClient: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
+    this.ddbClient,
+  );
+
+  /*getDynamoDBClient(): DynamoDBDocumentClient {
     const REGION: string = process.env.AWS_REGION;
     const CREDENTIAL_REGION: string = process.env.CREDENTIAL_REGION;
     const IDENTITY_POOL_ID: string = process.env.IDENTITY_POOL_ID || '';
@@ -32,11 +48,9 @@ export class DynamoDBService {
       DynamoDBDocumentClient.from(ddbClient);
 
     return ddbDocClient;
-  }
+  }*/
 
   async putItem(formData: any): Promise<any> {
-    const ddbDocClient: DynamoDBDocumentClient = this.getDynamoDBClient();
-
     const params = {
       TableName: 'myWeightData',
       Item: {
@@ -48,7 +62,7 @@ export class DynamoDBService {
     };
 
     try {
-      const data: PutCommandOutput = await ddbDocClient.send(
+      const data: PutCommandOutput = await this.ddbDocClient.send(
         new PutCommand(params),
       );
       console.log(data);
@@ -60,17 +74,16 @@ export class DynamoDBService {
   }
 
   async scanItems(): Promise<any> {
-    const ddbDocClient: DynamoDBDocumentClient = this.getDynamoDBClient();
-
     const param = {
       TableName: 'myWeightData',
     };
 
     try {
-      const data: ScanCommandOutput = await ddbDocClient.send(
+      const data: ScanCommandOutput = await this.ddbDocClient.send(
         new ScanCommand(param),
       );
-      console.log(JSON.stringify(data));
+
+      console.log(data.Items);
       // ここで日付順になるようソートする
       //data.Items?.sort();
       return data;
