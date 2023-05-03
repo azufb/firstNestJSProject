@@ -50,7 +50,6 @@ export class DynamoDBService {
       const data: PutCommandOutput = await this.ddbDocClient.send(
         new PutCommand(params),
       );
-      console.log(data);
 
       return data;
     } catch (err) {
@@ -73,7 +72,7 @@ export class DynamoDBService {
         return a.timestamp - b.timestamp;
       });
 
-      console.log(data.Items);
+      //console.log(data.Items);
       return data;
     } catch (err) {
       console.log('err', err);
