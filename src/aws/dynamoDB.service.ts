@@ -11,44 +11,29 @@ import {
 
 @Injectable()
 export class DynamoDBService {
-  REGION: string = process.env.AWS_REGION;
-  CREDENTIAL_REGION: string = process.env.CREDENTIAL_REGION;
-  IDENTITY_POOL_ID: string = process.env.IDENTITY_POOL_ID || '';
+  REGION: string;
+  CREDENTIAL_REGION: string;
+  IDENTITY_POOL_ID: string;
+  ddbDocClient: DynamoDBDocumentClient;
 
-  ddbClient: DynamoDBClient = new DynamoDBClient({
-    region: this.REGION,
-    credentials: fromCognitoIdentityPool({
-      clientConfig: {
-        region: this.CREDENTIAL_REGION,
-      },
-      identityPoolId: this.IDENTITY_POOL_ID,
-    }),
-  });
-
-  ddbDocClient: DynamoDBDocumentClient = DynamoDBDocumentClient.from(
-    this.ddbClient,
-  );
-
-  /*getDynamoDBClient(): DynamoDBDocumentClient {
-    const REGION: string = process.env.AWS_REGION;
-    const CREDENTIAL_REGION: string = process.env.CREDENTIAL_REGION;
-    const IDENTITY_POOL_ID: string = process.env.IDENTITY_POOL_ID || '';
+  // 初期化処理で、DynamoDBを使用するためDynamoDBのインスタンス生成
+  constructor() {
+    this.REGION = process.env.AWS_REGION;
+    this.CREDENTIAL_REGION = process.env.CREDENTIAL_REGION;
+    this.IDENTITY_POOL_ID = process.env.IDENTITY_POOL_ID || '';
 
     const ddbClient: DynamoDBClient = new DynamoDBClient({
-      region: REGION,
+      region: this.REGION,
       credentials: fromCognitoIdentityPool({
         clientConfig: {
-          region: CREDENTIAL_REGION,
+          region: this.CREDENTIAL_REGION,
         },
-        identityPoolId: IDENTITY_POOL_ID,
+        identityPoolId: this.IDENTITY_POOL_ID,
       }),
     });
 
-    const ddbDocClient: DynamoDBDocumentClient =
-      DynamoDBDocumentClient.from(ddbClient);
-
-    return ddbDocClient;
-  }*/
+    this.ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
+  }
 
   async putItem(formData: any): Promise<any> {
     const params = {
