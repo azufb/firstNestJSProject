@@ -9,6 +9,22 @@ import {
   ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
 
+type PutItemType = {
+  date: string;
+  timestamp: number;
+  weight: number;
+  bmi: number;
+};
+
+type PutParamType = {
+  TableName: string;
+  Item: PutItemType;
+};
+
+type ScanParamType = {
+  TableName: string;
+};
+
 @Injectable()
 export class DynamoDBService {
   REGION: string;
@@ -35,8 +51,8 @@ export class DynamoDBService {
     this.ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
   }
 
-  async putItem(formData: any): Promise<any> {
-    const params = {
+  async putItem(formData: any): Promise<PutCommandOutput> {
+    const params: PutParamType = {
       TableName: 'myWeightData',
       Item: {
         date: formData.date,
@@ -57,8 +73,8 @@ export class DynamoDBService {
     }
   }
 
-  async scanItems(): Promise<any> {
-    const param = {
+  async scanItems(): Promise<ScanCommandOutput> {
+    const param: ScanParamType = {
       TableName: 'myWeightData',
     };
 
@@ -72,7 +88,6 @@ export class DynamoDBService {
         return a.timestamp - b.timestamp;
       });
 
-      //console.log(data.Items);
       return data;
     } catch (err) {
       console.log('err', err);
