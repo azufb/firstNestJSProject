@@ -21,17 +21,13 @@ export class DynamoDBService {
 
   // 初期化処理で、DynamoDBを使用するためDynamoDBのインスタンス生成
   constructor() {
-    this.REGION = process.env.AWS_REGION;
-    this.CREDENTIAL_REGION = process.env.CREDENTIAL_REGION;
-    this.IDENTITY_POOL_ID = process.env.IDENTITY_POOL_ID || '';
-
     const ddbClient: DynamoDBClient = new DynamoDBClient({
-      region: this.REGION,
+      region: process.env.AWS_REGION,
       credentials: fromCognitoIdentityPool({
         clientConfig: {
-          region: this.CREDENTIAL_REGION,
+          region: process.env.CREDENTIAL_REGION,
         },
-        identityPoolId: this.IDENTITY_POOL_ID,
+        identityPoolId: process.env.IDENTITY_POOL_ID,
       }),
     });
 
@@ -40,7 +36,7 @@ export class DynamoDBService {
 
   async putItem(formData: AddItemFormDataType): Promise<PutCommandOutput> {
     const params: PutCommandInput = {
-      TableName: 'myWeightData',
+      TableName: process.env.DYNAMODB_TABLE_NAME,
       Item: {
         date: formData.date,
         timestamp: formData.timestamp,
@@ -62,7 +58,7 @@ export class DynamoDBService {
 
   async scanItems(): Promise<ScanCommandOutput> {
     const param: ScanCommandInput = {
-      TableName: 'myWeightData',
+      TableName: process.env.DYNAMODB_TABLE_NAME,
     };
 
     try {
