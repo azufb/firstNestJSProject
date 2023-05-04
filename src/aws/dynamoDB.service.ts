@@ -10,6 +10,7 @@ import {
   ScanCommandInput,
   ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
+import { AddItemFormDataType } from '../types/AddItemFormDataType';
 
 @Injectable()
 export class DynamoDBService {
@@ -37,7 +38,7 @@ export class DynamoDBService {
     this.ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
   }
 
-  async putItem(formData: any): Promise<PutCommandOutput> {
+  async putItem(formData: AddItemFormDataType): Promise<PutCommandOutput> {
     const params: PutCommandInput = {
       TableName: 'myWeightData',
       Item: {
