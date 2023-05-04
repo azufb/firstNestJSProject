@@ -4,26 +4,12 @@ import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 import {
   DynamoDBDocumentClient,
   PutCommand,
+  PutCommandInput,
   PutCommandOutput,
   ScanCommand,
+  ScanCommandInput,
   ScanCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
-
-type PutItemType = {
-  date: string;
-  timestamp: number;
-  weight: number;
-  bmi: number;
-};
-
-type PutParamType = {
-  TableName: string;
-  Item: PutItemType;
-};
-
-type ScanParamType = {
-  TableName: string;
-};
 
 @Injectable()
 export class DynamoDBService {
@@ -52,7 +38,7 @@ export class DynamoDBService {
   }
 
   async putItem(formData: any): Promise<PutCommandOutput> {
-    const params: PutParamType = {
+    const params: PutCommandInput = {
       TableName: 'myWeightData',
       Item: {
         date: formData.date,
@@ -68,13 +54,13 @@ export class DynamoDBService {
       );
 
       return data;
-    } catch (err) {
+    } catch (err: unknown) {
       console.log('err', err);
     }
   }
 
   async scanItems(): Promise<ScanCommandOutput> {
-    const param: ScanParamType = {
+    const param: ScanCommandInput = {
       TableName: 'myWeightData',
     };
 
@@ -89,7 +75,7 @@ export class DynamoDBService {
       });
 
       return data;
-    } catch (err) {
+    } catch (err: unknown) {
       console.log('err', err);
     }
   }
