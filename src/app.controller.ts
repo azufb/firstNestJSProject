@@ -7,6 +7,12 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  getHello(): string {
+    // appServiceクラスに記述したgetHelloメソッドを実行
+    return this.appService.getHello();
+  }
+
   @Get('goodBye')
   getGoodBye(): string {
     // appServiceクラスに記述したgetGoodByeメソッドを実行
@@ -15,7 +21,6 @@ export class AppController {
 
   @Post()
   postSomething(@Body() requestBody: any): string {
-    console.log(requestBody.msg);
     return this.appService.postSomething(requestBody.msg);
   }
 }
