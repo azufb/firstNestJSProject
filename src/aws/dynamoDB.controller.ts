@@ -3,7 +3,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AddItemFormDataType } from '../types/AddItemFormDataType';
 import { DynamoDBService } from './dynamoDB.service';
 
-@Controller()
+@Controller('dynamoDB')
 export class DynamoDBController {
   constructor(private readonly dynamoDBService: DynamoDBService) {}
 
