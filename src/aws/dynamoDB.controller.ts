@@ -13,7 +13,7 @@ export class DynamoDBController {
   }
 
   @Post('addItem')
-  addItem(@Body() formData: AddItemFormDataType): Promise<PutCommandOutput> {
-    return this.dynamoDBService.putItem(formData);
+  addItem(@Body() requestBody: AddItemFormDataType): Promise<PutCommandOutput> {
+    return this.dynamoDBService.putItem(requestBody);
   }
 }

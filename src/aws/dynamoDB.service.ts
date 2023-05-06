@@ -31,14 +31,14 @@ export class DynamoDBService {
     this.ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
   }
 
-  async putItem(formData: AddItemFormDataType): Promise<PutCommandOutput> {
+  async putItem(requestBody: AddItemFormDataType): Promise<PutCommandOutput> {
     const params: PutCommandInput = {
       TableName: process.env.DYNAMODB_TABLE_NAME,
       Item: {
-        date: formData.date,
-        timestamp: formData.timestamp,
-        weight: formData.weight,
-        bmi: formData.bmi,
+        date: requestBody.date,
+        timestamp: requestBody.timestamp,
+        weight: requestBody.weight,
+        bmi: requestBody.bmi,
       },
     };
 
