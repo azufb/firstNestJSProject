@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config'; // @nestjs/configはdotenvに依存。
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SampleController } from './sample/sample.controller';
@@ -8,7 +9,7 @@ import { DynamoDBModule } from './aws/dynamoDB.module';
 // アプリケーションを構成するメタデータを記述する
 
 @Module({
-  imports: [DynamoDBModule],
+  imports: [ConfigModule.forRoot(), DynamoDBModule],
   controllers: [AppController, SampleController],
   providers: [AppService, SampleService],
 })
