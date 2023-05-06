@@ -14,9 +14,6 @@ import { AddItemFormDataType } from '../types/AddItemFormDataType';
 
 @Injectable()
 export class DynamoDBService {
-  REGION: string;
-  CREDENTIAL_REGION: string;
-  IDENTITY_POOL_ID: string;
   ddbDocClient: DynamoDBDocumentClient;
 
   // 初期化処理で、DynamoDBを使用するためDynamoDBのインスタンス生成
