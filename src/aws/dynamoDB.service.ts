@@ -38,7 +38,6 @@ export class DynamoDBService {
         date: requestBody.date,
         timestamp: requestBody.timestamp,
         weight: requestBody.weight,
-        bmi: requestBody.bmi,
       },
     };
 
